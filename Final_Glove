@@ -1,0 +1,90 @@
+/* 
+- battery 
+  - gnd -> gnd 
+  - vcc -> vcc
+- temp sensor - index finger
+  - sensor tab -> a0
+  - gnd -> gnd 
+  - vcc -> vcc
+- temp sensor - thumb finger
+  - sensor tab -> a2
+  - gnd -> gnd 
+  - vcc -> vcc
+- temp sensor - palm 1
+  - sensor tab -> a3
+  - gnd -> gnd 
+  - vcc -> vcc
+- temp sensor - palm 2
+  - sensor tab -> a5
+  - gnd -> gnd 
+  - vcc -> vcc
+- buzzer 
+  - gnd -> gnd 
+  - vcc -> 7
+*/
+
+int buzzer_vcc = 7;
+int temp_sens = A5;
+int temp_sens_2 = A3;
+int temp_sens_3 = A2;
+int temp_sens_4 = A0;
+
+int time = 250;
+
+const int C = 1046;
+const int D = 2349;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(buzzer_vcc, OUTPUT);
+  pinMode(temp_sens, INPUT);
+  pinMode(temp_sens_2, INPUT);
+  pinMode(temp_sens_3, INPUT);
+  pinMode(temp_sens_4, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  long raw_temp = 0;
+  long raw_temp2 = 0;
+  long raw_temp3 = 0;
+  long raw_temp4 = 0;
+  float c = 0;
+  float c2 = 0;
+  float c3 = 0; 
+  float c4 = 0;
+
+  int test_temp = 53;
+
+  raw_temp = analogRead(temp_sens);
+  raw_temp2 = analogRead(temp_sens_2);
+  raw_temp3 = analogRead(temp_sens_3);
+  raw_temp4 = analogRead(temp_sens_4);
+  c = map(raw_temp, 0, 1023, 0, 100);
+  c2 = map(raw_temp2, 0, 1023, 0, 100);
+  c3 = map(raw_temp3, 0, 1023, 0, 100);
+  c4 = map(raw_temp4, 0, 1023, 0, 100);
+  Serial.print("c 1 : ");
+  Serial.println(c);
+  Serial.print("c 2 : ");
+  Serial.println(c2);
+  Serial.print("c 3 : ");
+  Serial.println(c3);
+  Serial.print("c 4 : ");
+  Serial.println(c4);
+
+  delay(time);
+
+  if (c > test_temp || c2 > test_temp || c3 > test_temp || c4 > test_temp) {
+  tone(buzzer_vcc, C);
+  delay(time);
+  tone(buzzer_vcc, D);
+  delay(time);
+  }
+  if (c < test_temp || c2 < test_temp || c3 < test_temp || c4 < test_temp){
+  noTone(buzzer_vcc);
+  delay(time);
+  }
+  
+}
