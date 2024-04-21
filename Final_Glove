@@ -55,7 +55,7 @@ void loop() {
   float c3 = 0; 
   float c4 = 0;
 
-  int test_temp = 53;
+  int test_temp = 33;
 
   raw_temp = analogRead(temp_sens);
   raw_temp2 = analogRead(temp_sens_2);
